@@ -27,7 +27,7 @@ void* producer(void* args) {
         pthread_mutex_lock(&mutexBuffer);
         buffer[count] = x;
         count++;
-        printf("number added to buffer: \n", x);
+        printf("number added to buffer: %d\n", x);
         pthread_mutex_unlock(&mutexBuffer);
         sem_post(&semFull);
     }
@@ -42,7 +42,7 @@ void* consumer(void* args) {
         pthread_mutex_lock(&mutexBuffer);
         y = buffer[count - 1];
         count--;
-        printf("number removed from the buffer: \n", y);
+        printf("number removed from the buffer: %d\n", y);
         pthread_mutex_unlock(&mutexBuffer);
         sem_post(&semEmpty);
 
@@ -62,12 +62,12 @@ int main(int argc, char* argv[]) {
    for (i = 0; i < THREAD_NUM; i++) {
       if (i > 0) {
          if (pthread_create(&th[i], NULL, &producer, NULL)){
-            printf("Successfully created producer thread, P\n", i);
+            printf("Successfully created producer thread, P %d\n", i);
          }
          else perror("Failed to create thread");
       } else {
          if (pthread_create(&th[i], NULL, &consumer, NULL)){
-            printf("SUccessfully created consumer thread, C\n", i);
+            printf("SUccessfully created consumer thread, C %d\n", i);
          }
          else perror("Failed to create thread");
          }
