@@ -61,25 +61,23 @@ int main(int argc, char* argv[]) {
    int i;
    for (i = 0; i < THREAD_NUM; i++) {
       if (i > 0) {
-         if (pthread_create(&th[i], NULL, &producer, NULL)){
-            printf("Successfully created producer thread, P %d\n", i);
+         if (pthread_create(&th[i], NULL, &producer, NULL) != 0) {
+            perror("Failed to create thread");
          }
-         else perror("Failed to create thread");
-      } else {
-         if (pthread_create(&th[i], NULL, &consumer, NULL)){
-            printf("SUccessfully created consumer thread, C %d\n", i);
-         }
-         else perror("Failed to create thread");
+         printf("Created produce thread, P %d\n", i);
+      }  else {
+            if (pthread_create(&th[i], NULL, &consumer, NULL) != 0) {
+               perror("Failed to create thread");
+            }
+            printf("created consumer thread, C %d\n", i);
          }
    }
 
    for (i = 0; i < THREAD_NUM; i++) {
-      if (pthread_join(th[i], NULL)) {
-         printf("Successfully joined producer and consumer!\n");
-
-         
+      if (pthread_join(th[i], NULL)!=0) {
          perror("Failed to join thread");
       }
+      printf("Successfully joined the produce and consumer threads\n");
    }
    sem_destroy(&semEmpty);
    sem_destroy(&semFull);
