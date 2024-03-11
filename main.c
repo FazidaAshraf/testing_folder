@@ -27,6 +27,7 @@ void* producer(void* args) {
         pthread_mutex_lock(&mutexBuffer);
         buffer[count] = x;
         count++;
+        printf("number added to buffer: \n", x);
         pthread_mutex_unlock(&mutexBuffer);
         sem_post(&semFull);
     }
@@ -41,6 +42,7 @@ void* consumer(void* args) {
         pthread_mutex_lock(&mutexBuffer);
         y = buffer[count - 1];
         count--;
+        printf("number removed from the buffer: \n", y);
         pthread_mutex_unlock(&mutexBuffer);
         sem_post(&semEmpty);
 
@@ -51,30 +53,36 @@ void* consumer(void* args) {
 }
 
 int main(int argc, char* argv[]) {
-    srand(time(NULL));
-    pthread_t th[THREAD_NUM];
-    pthread_mutex_init(&mutexBuffer, NULL);
-    sem_init(&semEmpty, 0, 10);
-    sem_init(&semFull, 0, 0);
-    int i;
-    for (i = 0; i < THREAD_NUM; i++) {
-        if (i > 0) {
-            if (pthread_create(&th[i], NULL, &producer, NULL) != 0) {
-                perror("Failed to create thread");
-            }
-        } else {
-            if (pthread_create(&th[i], NULL, &consumer, NULL) != 0) {
-                perror("Failed to create thread");
-            }
-        }
-    }
-    for (i = 0; i < THREAD_NUM; i++) {
-        if (pthread_join(th[i], NULL) != 0) {
-            perror("Failed to join thread");
-        }
-    }
-    sem_destroy(&semEmpty);
-    sem_destroy(&semFull);
-    pthread_mutex_destroy(&mutexBuffer);
-    return 0;
+   srand(time(NULL));
+   pthread_t th[THREAD_NUM];
+   pthread_mutex_init(&mutexBuffer, NULL);
+   sem_init(&semEmpty, 0, 10);
+   sem_init(&semFull, 0, 0);
+   int i;
+   for (i = 0; i < THREAD_NUM; i++) {
+      if (i > 0) {
+         if (pthread_create(&th[i], NULL, &producer, NULL)){
+            printf("Successfully created producer thread, P\n", i);
+         }
+         else perror("Failed to create thread");
+      } else {
+         if (pthread_create(&th[i], NULL, &consumer, NULL)){
+            printf("SUccessfully created consumer thread, C\n", i);
+         }
+         else perror("Failed to create thread");
+         }
+   }
+
+   for (i = 0; i < THREAD_NUM; i++) {
+      if (pthread_join(th[i], NULL)) {
+         printf("Successfully joined producer and consumer!\n");
+
+         
+         perror("Failed to join thread");
+      }
+   }
+   sem_destroy(&semEmpty);
+   sem_destroy(&semFull);
+   pthread_mutex_destroy(&mutexBuffer);
+   return 0;
 }
