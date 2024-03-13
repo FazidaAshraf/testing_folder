@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-#define BUFFER_SIZE 5
-#define MAX_ITEMS 5
+#define BUFFER_SIZE 10
+#define MAX_ITEMS 10
 
 int buffer[BUFFER_SIZE];
 int in = 0;
@@ -22,8 +22,8 @@ void* producer(void* arg) {
             pthread_cond_wait(&empty, &mutex);
         }
         buffer[in] = x;
-        printf("Produced: %d", x);
-        printf("the index is: %d", in);
+        printf("Produced: %d\n", x);
+        printf("the index is: %d\n", in);
         in = (in + 1) % BUFFER_SIZE;
         produced_count++;
         pthread_cond_signal(&full);
@@ -39,7 +39,7 @@ void* consumer(void* arg) {
             pthread_cond_wait(&full, &mutex);
         }
         int item = buffer[out];
-        printf("Consumed: %d", item);
+        printf("Consumed: %d\n", item);
         printf("consumed index is at: %d\n", out);
         out = (out + 1) % BUFFER_SIZE;
         consumed_count++;
