@@ -7,9 +7,9 @@
 extern pthread_mutex_t mutex;
 extern pthread_cond_t full;
 extern pthread_cond_t empty;
-extern struct bufferData;
+//extern struct bufferData;
 
 void* producer(void* arg);
 void* consumer(void* arg);
-void createThreads(int numproducers, int numconsumers);
-void joiningthread(int numproducers, int numconsumers);
+//void createThreads(int numproducers, int numconsumers);
+//void joiningthread(int numproducers, int numconsumers);

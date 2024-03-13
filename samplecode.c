@@ -25,6 +25,9 @@ int main(int argc, char* argv[]){
     //createThreads(numproducers, numconsumers);
     //joiningThreads(numproducers, numconsumers);
 
+    pthread_t prod[numproducers];
+    pthread_t cons[numconsumers];
+    
     int i,j;
     for (i = 0; i < numproducers; i++) {
         if (pthread_create(&prod[i], NULL, &producer, NULL) != 0) {
