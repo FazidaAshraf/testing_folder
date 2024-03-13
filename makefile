@@ -1,7 +1,2 @@
-all: main buffer
-
-main: main.o
-	gcc main.o -o main -I.
-
-buffer: buffer.o
-	gcc buffer.o -o buffer -I. -lm
+prod_cons_MT: prod_cons_MT.c main.c
+	gcc -o prod_cons_MT prod_cons_MT.c main.c -I.

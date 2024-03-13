@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <pthread.h>
 #define MAX_ITEMS 10
+#ifndef PROD_CONS_MT_H
+#define PROD_CONS_MT_H
+
 struct bufferData{
    int size;
    int numproducers;
