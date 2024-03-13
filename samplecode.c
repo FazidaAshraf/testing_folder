@@ -15,12 +15,12 @@ pthread_cond_t full;
 pthread_cond_t empty;
 
 void* producer(void* arg) {
-    int x = rand() % 10;
     while (produced_count < MAX_ITEMS) {
         pthread_mutex_lock(&mutex);
         while (((in + 1) % BUFFER_SIZE) == out) {
             pthread_cond_wait(&empty, &mutex);
         }
+        int x = rand() % 10;
         buffer[in] = x;
         printf("Produced: %d\n", x);
         printf("the index is: %d\n", in);
