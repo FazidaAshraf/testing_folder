@@ -22,10 +22,34 @@ int main(int argc, char* argv[]){
 
     printf("The value of buffersize = %d\n", sharedBuffer.size);
 
-    createThreads(numproducers, numconsumers);
-    joiningThreads(numproducers, numconsumers);
-    
+    //createThreads(numproducers, numconsumers);
+    //joiningThreads(numproducers, numconsumers);
 
+    int i,j;
+    for (i = 0; i < numproducers; i++) {
+        if (pthread_create(&prod[i], NULL, &producer, NULL) != 0) {
+            perror("Failed to create producer thread\n");
+        }
+        printf("Created produce thread, P %d\n", i);
+    }
+    for (j=0; j<numconsumers; j++){
+        if (pthread_create(&cons[j], NULL, &consumer, NULL)!= 0){
+            perror("Failed to create consumer thread\n");
+        }
+        printf("Created consumer thread, C %d\n", j);
+    }
+
+    for (i = 0; i < numproducers; i++) {
+        if (pthread_join(prod[i], NULL)!=0) {
+            perror("Failed to join producer thread\n");
+        }
+    }
+    for (j=0; i< numconsumers; j++){
+        if (pthread_join(cons[i], NULL)!=0){
+            perror("Failed to join consumer thread\n");
+        }
+    }
+    printf("Successfully joined the produce and consumer threads\n");
     //pthread_t producerThread, consumerThread;
     pthread_mutex_init(&mutex, NULL);
     pthread_cond_init(&full, NULL);

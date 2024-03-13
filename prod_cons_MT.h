@@ -11,3 +11,5 @@ extern struct bufferData;
 
 void* producer(void* arg);
 void* consumer(void* arg);
+void createThreads(int numproducers, int numconsumers);
+void joiningthread(int numproducers, int numconsumers);

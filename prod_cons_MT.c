@@ -55,7 +55,7 @@ void* consumer(void* arg) {
     }
     pthread_exit(NULL);
 }
-void createThreads(int numproducers, int numconsumers){
+/*void createThreads(int numproducers, int numconsumers){
     for (i = 0; i < numproducers; i++) {
         if (pthread_create(&prod[i], NULL, &producer, NULL) != 0) {
             perror("Failed to create producer thread\n");
@@ -87,7 +87,7 @@ void joiningthread(int numproducers, int numconsumers){
     }
     printf("Successfully joined the produce and consumer threads\n");
 }
-
+*/
 /*
 TODO: add_item()
     if full:
