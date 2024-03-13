@@ -2,7 +2,11 @@
 #include <stdlib.h>
 #include <pthread.h>
 #define MAX_ITEMS 10
-
+struct bufferData{
+   int size;
+   int numproducers;
+   int numconsumers;
+};
 
 extern pthread_mutex_t mutex;
 extern pthread_cond_t full;

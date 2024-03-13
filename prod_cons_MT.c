@@ -2,12 +2,6 @@
 #include <stdlib.h>
 #include "prod_cons_MT.h"
 
-struct bufferData{
-   int size;
-   int numproducers;
-   int numconsumers;
-};
-
 int size = bufferData.size;
 int buffer[size];
 
