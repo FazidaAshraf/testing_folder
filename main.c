@@ -93,14 +93,13 @@ int main(int argc, char* argv[]) {
    int i,j;
    for (i = 0; i < numproducers; i++) {
       if (pthread_create(&prod[i], NULL, &producer, NULL) != 0) {
-         //producer(buffer[]);
          perror("Failed to create producer thread\n");
       }
       printf("Created produce thread, P %d\n", i);
    }
    for (j=0; j<numconsumers; j++){
       if (pthread_create(&cons[j], NULL, &consumer, NULL)!= 0){
-         //consumer(buffer[]);
+
          perror("Failed to create consumer thread\n");
       }
       printf("Created consumer thread, C %d\n", j);

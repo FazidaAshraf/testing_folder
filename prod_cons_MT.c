@@ -8,7 +8,7 @@ struct bufferData{
    int numconsumers;
 };
 
-size = sharedBuffer.size
+int size = bufferData.size;
 int buffer[size];
 
 int in = 0;
