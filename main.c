@@ -16,12 +16,12 @@ pthread_mutex_t mutexBuffer;
 
 int count = 0;
 
-struct bufferData{
+/*struct bufferData{
    int size;
    int numproducers;
    int numconsumers;
 } sharedBuffer;
-
+*/
 
 void* producer(void* argds) {
    while (1) {
@@ -98,7 +98,7 @@ int main(int argc, char* argv[]) {
       }
       printf("Created produce thread, P %d\n", i);
    }
-   for (j-0; j<numconsumers; j++){
+   for (j=0; j<numconsumers; j++){
       if (pthread_create(&cons[j], NULL, &consumer, NULL)!= 0){
          //consumer(buffer[]);
          perror("Failed to create consumer thread\n");

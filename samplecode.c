@@ -1,66 +1,41 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-#define BUFFER_SIZE 10
+#include "prod_cons_MT.h"
+
 #define MAX_ITEMS 10
 
-int buffer[BUFFER_SIZE];
-int in = 0;
-int out = 0;
-int produced_count = 0;
-int consumed_count = 0;
+int main(int argc, char* argv[]){
+    srand(time(NULL));
+   if (argc != 4) {
 
-pthread_mutex_t mutex;
-pthread_cond_t full;
-pthread_cond_t empty;
+      fprintf(stderr, "Usage: %s <buffer_size> <num_producers> <num_consumers>\n", argv[0]);
+      return EXIT_FAILURE;
+   }
 
-void* producer(void* arg) {
-    while (produced_count < MAX_ITEMS) {
-        pthread_mutex_lock(&mutex);
-        while (((in + 1) % BUFFER_SIZE) == out) {
-            pthread_cond_wait(&empty, &mutex);
-        }
-        int x = rand() % 10;
-        buffer[in] = x;
-        printf("Produced: %d\n", x);
-        printf("the index is: %d\n", in);
-        in = (in + 1) % BUFFER_SIZE;
-        produced_count++;
-        pthread_cond_signal(&full);
-        pthread_mutex_unlock(&mutex);
-    }
-    pthread_exit(NULL);
-}
+    int buffersize = atoi(argv[1]);
+    int numproducers = atoi(argv[2]);
+    int numconsumers = atoi(argv[3]);
 
-void* consumer(void* arg) {
-    while (consumed_count < MAX_ITEMS) {
-        pthread_mutex_lock(&mutex);
-        while (in == out) {
-            pthread_cond_wait(&full, &mutex);
-        }
-        int item = buffer[out];
-        printf("Consumed: %d\n", item);
-        printf("consumed index is at: %d\n", out);
-        out = (out + 1) % BUFFER_SIZE;
-        consumed_count++;
-        pthread_cond_signal(&empty);
-        pthread_mutex_unlock(&mutex);
-    }
-    pthread_exit(NULL);
-}
+    sharedBuffer.size = buffersize;
 
-int main() {
-   pthread_t producerThread, consumerThread;
-   pthread_mutex_init(&mutex, NULL);
-   pthread_cond_init(&full, NULL);
-   pthread_cond_init(&empty, NULL);
-   pthread_create(&producerThread, NULL, producer, NULL);
-   pthread_create(&consumerThread, NULL, consumer, NULL);
-   pthread_join(producerThread, NULL);
-   pthread_join(consumerThread, NULL);
-   pthread_mutex_destroy(&mutex);
-   pthread_cond_destroy(&full);
-   pthread_cond_destroy(&empty);
-   return 0;
+    printf("The value of buffersize = %d\n", sharedBuffer.size);
+
+    createThreads(numproducers, numconsumers);
+    joiningThreads(numproducers, numconsumers);
+    
+
+    //pthread_t producerThread, consumerThread;
+    pthread_mutex_init(&mutex, NULL);
+    pthread_cond_init(&full, NULL);
+    pthread_cond_init(&empty, NULL);
+    //pthread_create(&producerThread, NULL, producer, NULL);
+    //pthread_create(&consumerThread, NULL, consumer, NULL);
+    //pthread_join(producerThread, NULL);
+    //pthread_join(consumerThread, NULL);
+    pthread_mutex_destroy(&mutex);
+    pthread_cond_destroy(&full);
+    pthread_cond_destroy(&empty);
+    return 0;
 
 }
