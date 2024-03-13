@@ -80,8 +80,7 @@ int main(int argc, char* argv[]) {
         }
         printf("Created consumer thread, C %d\n", j);
     }
-    pthread_join(producerThread, NULL);
-    pthread_join(consumerThread, NULL);
+    
     pthread_mutex_destroy(&mutex);
     pthread_cond_destroy(&full);
     pthread_cond_destroy(&empty);
