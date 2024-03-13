@@ -6,7 +6,7 @@ struct bufferData{
    int size;
    int numproducers;
    int numconsumers;
-} sharedBuffer;
+};
 
 size = sharedBuffer.size
 int buffer[size];

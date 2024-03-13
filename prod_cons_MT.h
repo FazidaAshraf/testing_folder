@@ -7,7 +7,7 @@
 extern pthread_mutex_t mutex;
 extern pthread_cond_t full;
 extern pthread_cond_t empty;
-extern int buffersize;
+extern struct bufferData;
 
 void* producer(void* arg);
 void* consumer(void* arg);

@@ -17,6 +17,7 @@ int main(int argc, char* argv[]){
     int numproducers = atoi(argv[2]);
     int numconsumers = atoi(argv[3]);
 
+    struct bufferData sharedBuffer;
     sharedBuffer.size = buffersize;
 
     printf("The value of buffersize = %d\n", sharedBuffer.size);
