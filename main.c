@@ -119,19 +119,3 @@ int main(int argc, char* argv[]) {
     return 0;
 
 }
-
-void full(BUFFER_SIZE, ){
-    if sizeof(buffer) == BUFFER_SIZE{
-        printf("P%d :Blcked due to full buffer\n");
-    }
-    /*if the buffer is full:
-    printf("P0: Blocked due to full buffer")
-    should be displaying for producer */
-
-}
-void empty(){
-    /*
-    if the buffer is empty:
-        0: Blocked due to empty buffer
-        should be displaying for consumer*/
-}
