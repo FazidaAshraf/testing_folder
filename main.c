@@ -33,7 +33,7 @@ void* producer(void* arg) {
             printf(" Writing %d to position %d", buffer[a], array[a]);
         }
         if (sizeof(buffer) == BUFFER_SIZE){
-            printf("P%d :Blocked due to full buffer\n");
+            printf("Blocked due to full buffer, P:%d\n", i);
         }
         
 
@@ -90,14 +90,14 @@ int main(int argc, char* argv[]) {
         perror("Failed to create producer thread%d\n", i);
     }
         printf("Main: started producer %d\n", i);
-        producer();
+        &producer;
     }
     for (j=0; j<numconsumers; j++){
         if (pthread_create(&cons[j], NULL, &consumer, NULL)!= 0){
             perror("Failed to create consumer thread\n");
         }
         printf("Created consumer thread, C %d\n", j);
-        consumer();
+        &consumer;
     }
     
     pthread_mutex_destroy(&mutex);
