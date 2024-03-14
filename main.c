@@ -87,7 +87,7 @@ int main(int argc, char* argv[]) {
  
     for (i = 0; i < numproducers; i++) {
     if (pthread_create(&prod[i], NULL, &producer, NULL) != 0) {
-        perror("Failed to create producer thread%d\n", i);
+        printf("Failed to create producer thread%d\n", i);
     }
         printf("Main: started producer %d\n", i);
         &producer;
