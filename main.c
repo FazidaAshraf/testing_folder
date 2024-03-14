@@ -37,7 +37,7 @@ void* producer(void* arg) {
     */
         for(int a; a < 6; a++){
             buffer[a] = array[a];
-            printf(" Writing %d to position %d", buffer[a], array[a]);
+            printf(" Writing %d to position %d", buffer[a], a);
         }
         if (sizeof(buffer) == BUFFER_SIZE){
             printf("Blocked due to full buffer, P:%d\n", i);
