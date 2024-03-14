@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-#define BUFFER_SIZE 6
-#define MAX_ITEMS 6
+#include <assert.h>
+#define BUFFER_SIZE 10
+#define MAX_ITEMS 10
 
 int buffer[BUFFER_SIZE];
 int in = 0;
@@ -11,48 +12,73 @@ int produced_count = 0;
 int consumed_count = 0;
 int i,j;
 
+
 pthread_mutex_t mutex;
 pthread_cond_t full;
 pthread_cond_t empty;
 
+/*struct for buffer!
+typedef struct {
+    size_t head;
+    size_t tail;
+    size_t size;
+    void** data;
+} queue_t;
+
+void* buffer_read(buffer_t *buffer) {
+    if (buffer->tail == buffer->head) {
+        return NULL;
+    }
+    void* handle = buffer->data[buffer->tail];
+    buffer->data[buffer->tail] = NULL;
+    buffer->tail = (buffer->tail + 1) % buffer->size;
+    return handle;
+}
+
+int buffer_write(buffer_t *buffer, void* handle) {
+    if (((buffer->head + 1) % buffer->size) == buffer->tail) {
+        return -1;
+    }
+    buffer->data[buffer->head] = handle;
+    buffer->head = (buffer->head + 1) % buffer->size;
+    return 0;
+}
+
+void bufferqueue(){
+    buffer_t example = {0, 0, BUFFER_SIZE, malloc(sizeof(void*) * BUFFER_SIZE)};
+  
+    // Write until queue is full
+    for (int i=0; i<BUFFER_SIZE; i++) {
+        int res = queue_write(&example, (void*)(i+1));
+        assert((i == BUFFER_SIZE - 1) ? res == -1: res == 0);
+    }
+    // Read until queue is empty
+    for (int i=0; i<BUFFER_SIZE; i++) {
+        void* handle = queue_read(&example);
+        assert((i == BUFFER_SIZE - 1) ? handle == NULL: handle == (i+1));
+    }
+}
+
+*/
 void* producer(void* arg) {
     printf("Main: started producer %d\n", i);
-    //int array[6];
-    for (produced_count = 0; produced_count <MAX_ITEMS; produced_count++){
-        int x = rand() % 10;
-        array[produced_count] = x;
-        printf("P%d: Producing 6 values\n", i);
-    }
-    for (int k = 0; k < 6; k++){
-        printf("%d\n", array[k]);
-    }
+    while (produced_count < MAX_ITEMS) {
         pthread_mutex_lock(&mutex);
         while (((in + 1) % BUFFER_SIZE) == out) {
             pthread_cond_wait(&empty, &mutex);
         }
-    for(int a; a < 6; a++){
-        buffer[a] = array[a];
-        printf(" Writing %d to position %d", buffer[a], a);
-    }
-    if (sizeof(buffer) == BUFFER_SIZE){
-        printf("Blocked due to full buffer, P:%d\n", i);
-    }
-        
-
-        //buffer[in] = x;
-
-        //printf("Produced: %d\n", x);
-        //printf("the index is: %d\n", in);
-
+        int x = rand() % 10;
+        buffer[in] = x;
+        printf("Produced: %d\n", x);
+        printf("the index is: %d\n", in);
         in = (in + 1) % BUFFER_SIZE;
-        
-        printf("in value is: %d\n", in);
+        produced_count++;
         pthread_cond_signal(&full);
         pthread_mutex_unlock(&mutex);
-    
+    }
     pthread_exit(NULL);
-
 }
+
 void* consumer(void* arg) {
     while (consumed_count < MAX_ITEMS) {
         pthread_mutex_lock(&mutex);
@@ -83,10 +109,7 @@ int main(int argc, char* argv[]) {
 
     pthread_t prod[numproducers];
     pthread_t cons[numconsumers];
-    pthread_mutex_init(&mutex, NULL);
-    pthread_cond_init(&full, NULL);
-    pthread_cond_init(&empty, NULL);
- 
+     
     for (i = 0; i < numproducers; i++) {
         printf("value of i is: %d\n",i);
         if (pthread_create(&prod[i], NULL, &producer, NULL) != 0) {
@@ -103,6 +126,7 @@ int main(int argc, char* argv[]) {
     pthread_mutex_destroy(&mutex);
     pthread_cond_destroy(&full);
     pthread_cond_destroy(&empty);
+
 
     for (i = 0; i < numproducers; i++) {
         if (pthread_join(prod[i], NULL)!=0) {
