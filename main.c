@@ -90,8 +90,9 @@ int main(int argc, char* argv[]) {
     pthread_cond_init(&empty, NULL);
  
     for (i = 0; i < numproducers; i++) {
-    if (pthread_create(&prod[i], NULL, &producer, NULL) != 0) {
-        perror("Failed to create producer thread\n");
+        if (pthread_create(&prod[i], NULL, &producer, NULL) != 0) {
+            perror("Failed to create producer thread\n");
+        }
     }
     for (j=0; j<numconsumers; j++){
         if (pthread_create(&cons[j], NULL, &consumer, NULL)!= 0){
