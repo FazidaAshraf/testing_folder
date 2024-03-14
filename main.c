@@ -17,10 +17,9 @@ pthread_cond_t empty;
 
 void* producer(void* arg) {
     int array[6];
-    for (produced_count<MAX_ITEMS){
+    for (produced_count = 0; produced_count <MAX_ITEMS; produced_count++){
         int x = rand() % 10;
         array[produced_count] = x;
-        produced_count++;
         printf("P%d: Producing 6 values\n", i);
         pthread_mutex_lock(&mutex);
         while (((in + 1) % BUFFER_SIZE) == out) {
