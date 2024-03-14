@@ -16,6 +16,7 @@ pthread_cond_t full;
 pthread_cond_t empty;
 
 void* producer(void* arg) {
+    printf("Main: started producer %d\n", i);
     int array[6];
     for (produced_count = 0; produced_count <MAX_ITEMS; produced_count++){
         int x = rand() % 10;
@@ -89,11 +90,8 @@ int main(int argc, char* argv[]) {
     pthread_cond_init(&empty, NULL);
  
     for (i = 0; i < numproducers; i++) {
-    if (pthread_create(&prod[i], NULL, &producer, NULL) == 0) {
-        printf("Main: started producer %d\n", i);
-    }else
-        printf("Failed to create producer thread%d\n", i);
-    &producer;
+    if (pthread_create(&prod[i], NULL, &producer, NULL) != 0) {
+        perror("Failed to create producer thread\n");
     }
     for (j=0; j<numconsumers; j++){
         if (pthread_create(&cons[j], NULL, &consumer, NULL)!= 0){
