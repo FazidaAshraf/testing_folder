@@ -23,6 +23,9 @@ void* producer(void* arg) {
         array[produced_count] = x;
         printf("P%d: Producing 6 values\n", i);
     }
+    for (int k = 0; k < 6; k++){
+        printf("%d", array[k]\n);
+    }
         pthread_mutex_lock(&mutex);
         while (((in + 1) % BUFFER_SIZE) == out) {
             pthread_cond_wait(&empty, &mutex);
@@ -99,7 +102,6 @@ int main(int argc, char* argv[]) {
             perror("Failed to create consumer thread\n");
         }
         printf("Created consumer thread, C %d\n", j);
-        &consumer;
     }
     
     pthread_mutex_destroy(&mutex);
