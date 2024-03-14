@@ -24,7 +24,7 @@ void* producer(void* arg) {
         printf("P%d: Producing 6 values\n", i);
     }
     for (int k = 0; k < 6; k++){
-        printf("%d", array[k]\n);
+        printf("%d\n", array[k]);
     }
         pthread_mutex_lock(&mutex);
         while (((in + 1) % BUFFER_SIZE) == out) {
