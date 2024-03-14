@@ -91,9 +91,9 @@ int main(int argc, char* argv[]) {
     for (i = 0; i < numproducers; i++) {
     if (pthread_create(&prod[i], NULL, &producer, NULL) == 0) {
         printf("Main: started producer %d\n", i);
-    }
+    }else
         printf("Failed to create producer thread%d\n", i);
-        &producer;
+    &producer;
     }
     for (j=0; j<numconsumers; j++){
         if (pthread_create(&cons[j], NULL, &consumer, NULL)!= 0){
