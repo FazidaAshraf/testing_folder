@@ -21,11 +21,11 @@ void* producer(void* arg) {
         int x = rand() % 10;
         array[produced_count] = x;
         printf("P%d: Producing 6 values\n", i);
+    }
         pthread_mutex_lock(&mutex);
         while (((in + 1) % BUFFER_SIZE) == out) {
             pthread_cond_wait(&empty, &mutex);
         }
-    }
     /*while (produced_count < MAX_ITEMS) {
         int x = rand() % 10;
         array[produced_count] = x;
