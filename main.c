@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-#define BUFFER_SIZE 10
+#define BUFFER_SIZE 6
 #define MAX_ITEMS 6
 
 int buffer[BUFFER_SIZE];
@@ -17,17 +17,21 @@ pthread_cond_t empty;
 
 void* producer(void* arg) {
     int array[6];
-    while (produced_count < MAX_ITEMS) {
+    for (produced_count<MAX_ITEMS){
         int x = rand() % 10;
         array[produced_count] = x;
         produced_count++;
-        
         printf("P%d: Producing 6 values\n", i);
         pthread_mutex_lock(&mutex);
         while (((in + 1) % BUFFER_SIZE) == out) {
             pthread_cond_wait(&empty, &mutex);
         }
     }
+    /*while (produced_count < MAX_ITEMS) {
+        int x = rand() % 10;
+        array[produced_count] = x;
+        produced_count++;
+    */
         for(int a; a < 6; a++){
             buffer[a] = array[a];
             printf(" Writing %d to position %d", buffer[a], array[a]);
@@ -86,10 +90,10 @@ int main(int argc, char* argv[]) {
     pthread_cond_init(&empty, NULL);
  
     for (i = 0; i < numproducers; i++) {
-    if (pthread_create(&prod[i], NULL, &producer, NULL) != 0) {
-        printf("Failed to create producer thread%d\n", i);
-    }
+    if (pthread_create(&prod[i], NULL, &producer, NULL) == 0) {
         printf("Main: started producer %d\n", i);
+    }
+        printf("Failed to create producer thread%d\n", i);
         &producer;
     }
     for (j=0; j<numconsumers; j++){
