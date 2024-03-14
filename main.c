@@ -2,36 +2,55 @@
 #include <stdlib.h>
 #include <pthread.h>
 #define BUFFER_SIZE 10
-#define MAX_ITEMS 10
+#define MAX_ITEMS 6
 
 int buffer[BUFFER_SIZE];
 int in = 0;
 int out = 0;
 int produced_count = 0;
 int consumed_count = 0;
+int i,j;
 
 pthread_mutex_t mutex;
 pthread_cond_t full;
 pthread_cond_t empty;
 
 void* producer(void* arg) {
+    int array[6];
     while (produced_count < MAX_ITEMS) {
+        int x = rand() % 10;
+        array[produced_count] = x;
+        produced_count++;
+        
+        printf("P%d: Producing 6 values\n", i);
         pthread_mutex_lock(&mutex);
         while (((in + 1) % BUFFER_SIZE) == out) {
             pthread_cond_wait(&empty, &mutex);
         }
-        int x = rand() % 10;
-        buffer[in] = x;
-        printf("Produced: %d\n", x);
-        printf("the index is: %d\n", in);
+    }
+        for(int a; a < 6; a++){
+            buffer[a] = array[a];
+            printf(" Writing %d to position %d", buffer[a], array[a]);
+        }
+        if (sizeof(buffer) == BUFFER_SIZE){
+            printf("P%d :Blocked due to full buffer\n");
+        }
+        
+
+        //buffer[in] = x;
+
+        //printf("Produced: %d\n", x);
+        //printf("the index is: %d\n", in);
+
         in = (in + 1) % BUFFER_SIZE;
-        produced_count++;
+        
+        printf("in value is: %d\n", in);
         pthread_cond_signal(&full);
         pthread_mutex_unlock(&mutex);
-    }
+    
     pthread_exit(NULL);
-}
 
+}
 void* consumer(void* arg) {
     while (consumed_count < MAX_ITEMS) {
         pthread_mutex_lock(&mutex);
@@ -65,20 +84,20 @@ int main(int argc, char* argv[]) {
     pthread_mutex_init(&mutex, NULL);
     pthread_cond_init(&full, NULL);
     pthread_cond_init(&empty, NULL);
-   //pthread_create(&producerThread, NULL, producer, NULL);
-   //pthread_create(&consumerThread, NULL, consumer, NULL);
-    int i,j;
+ 
     for (i = 0; i < numproducers; i++) {
     if (pthread_create(&prod[i], NULL, &producer, NULL) != 0) {
-        perror("Failed to create producer thread\n");
+        perror("Failed to create producer thread%d\n", i);
     }
-        printf("Created produce thread, P %d\n", i);
+        printf("Main: started producer %d\n", i);
+        producer();
     }
     for (j=0; j<numconsumers; j++){
         if (pthread_create(&cons[j], NULL, &consumer, NULL)!= 0){
             perror("Failed to create consumer thread\n");
         }
         printf("Created consumer thread, C %d\n", j);
+        consumer();
     }
     
     pthread_mutex_destroy(&mutex);
@@ -99,4 +118,20 @@ int main(int argc, char* argv[]) {
 
     return 0;
 
+}
+
+void full(BUFFER_SIZE, ){
+    if sizeof(buffer) == BUFFER_SIZE{
+        printf("P%d :Blcked due to full buffer\n");
+    }
+    /*if the buffer is full:
+    printf("P0: Blocked due to full buffer")
+    should be displaying for producer */
+
+}
+void empty(){
+    /*
+    if the buffer is empty:
+        0: Blocked due to empty buffer
+        should be displaying for consumer*/
 }

@@ -2,9 +2,6 @@
 #include <stdlib.h>
 #include "prod_cons_MT.h"
 
-int size = bufferData.size;
-int buffer[size];
-
 int in = 0;
 int out = 0;
 int produced_count = 0;
