@@ -114,7 +114,7 @@ int main(int argc, char* argv[]) {
      
     for (i = 0; i < numproducers; i++) {
         //printf("value of i is: %d\n",i);
-        if (pthread_create(&prod[i], NULL, &producer, NULL) != 0) {
+        if (pthread_create(&prod[i], NULL, &producer,i, NULL) != 0) {
             perror("Failed to create producer thread\n");
         }
     }
