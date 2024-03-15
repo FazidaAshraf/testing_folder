@@ -62,14 +62,20 @@ void bufferqueue(){
 */
 void* producer(void* arg) {
     printf("Main: started producer %d\n", i);
+    for (produced_count = 0; produced_count <MAX_ITEMS; produced_count++){
+        int x = rand() % 10;
+        array[produced_count] = x;
+        printf("P%d: Producing 6 values\n", i);
+    }
+
     while (produced_count < MAX_ITEMS) {
         pthread_mutex_lock(&mutex);
         while (((in + 1) % BUFFER_SIZE) == out) {
             pthread_cond_wait(&empty, &mutex);
         }
-        int x = rand() % 10;
+        //int x = rand() % 10;
         buffer[in] = x;
-        printf("Produced: %d\n", x);
+        printf("number: %d produced in producer: %d\n", x, i);
         printf("the index is: %d\n", in);
         in = (in + 1) % BUFFER_SIZE;
         produced_count++;
@@ -111,7 +117,7 @@ int main(int argc, char* argv[]) {
     pthread_t cons[numconsumers];
      
     for (i = 0; i < numproducers; i++) {
-        printf("value of i is: %d\n",i);
+        //printf("value of i is: %d\n",i);
         if (pthread_create(&prod[i], NULL, &producer, NULL) != 0) {
             perror("Failed to create producer thread\n");
         }
