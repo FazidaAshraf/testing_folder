@@ -77,6 +77,8 @@ void* producer(void* arg) {
         produced_count++;
         pthread_cond_signal(&full);
         pthread_mutex_unlock(&mutex);
+        //should be checking for buffer full:
+            //print the error message!
     }
     pthread_exit(NULL);
 }
@@ -95,6 +97,8 @@ void* consumer(void* arg) {
         pthread_cond_signal(&empty);
         pthread_mutex_unlock(&mutex);
     }
+    //should be checking for buffer empty:
+        //print the error message!
     pthread_exit(NULL);
 }
 
@@ -114,7 +118,7 @@ int main(int argc, char* argv[]) {
      
     for (i = 0; i < numproducers; i++) {
         //printf("value of i is: %d\n",i);
-        if (pthread_create(&prod[i], NULL, &producer,i, NULL) != 0) {
+        if (pthread_create(&prod[i], NULL, &producer, NULL) != 0) {
             perror("Failed to create producer thread\n");
         }
     }

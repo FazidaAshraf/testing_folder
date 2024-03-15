@@ -17,7 +17,7 @@ pthread_cond_t empty;
 
 void* producer(void* arg) {
     printf("Main: started producer %d\n", i);
-    //int array[6];
+    int array[6];
     for (produced_count = 0; produced_count <MAX_ITEMS; produced_count++){
         int x = rand() % 10;
         array[produced_count] = x;
