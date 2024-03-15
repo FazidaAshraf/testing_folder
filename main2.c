@@ -10,13 +10,12 @@ int in = 0;
 int out = 0;
 int produced_count = 0;
 int consumed_count = 0;
-int i;
+int i,j;
 
 
 pthread_mutex_init(&mutex);
 pthread_cond_init(&full);
 pthread_cond_init(&empty);
-
 
 /*struct for buffer!
 typedef struct {
@@ -123,11 +122,11 @@ int main(int argc, char* argv[]) {
             perror("Failed to create producer thread\n");
         }
     }
-    for (i=0; i<numconsumers; i++){
-        if (pthread_create(&cons[i], NULL, &consumer, NULL)!= 0){
+    for (j=0; j<numconsumers; j++){
+        if (pthread_create(&cons[j], NULL, &consumer, NULL)!= 0){
             perror("Failed to create consumer thread\n");
         }
-        printf("Created consumer thread, C %d\n", i);
+        printf("Created consumer thread, C %d\n", j);
     }
     
     pthread_mutex_destroy(&mutex);
@@ -140,7 +139,7 @@ int main(int argc, char* argv[]) {
          perror("Failed to join producer thread\n");
         }
     }
-    for (i=0; i< numconsumers; i++){
+    for (j=0; i< numconsumers; j++){
         if (pthread_join(cons[i], NULL)!=0){
             perror("Failed to join consumer thread\n");
         }
@@ -149,4 +148,4 @@ int main(int argc, char* argv[]) {
 
     return 0;
 
-}
+} 
